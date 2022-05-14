@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<title>{% block title %}Covid 19 API{% endblock title %}</title>
+<meta name="description" content="A framework for launching new Django projects quickly.">
+<meta name="author" content="">
+
+{% block css %}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+<style>
+  html {
+  position: relative;
+  min-height: 100%;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin-bottom: 60px; /* Margin bottom by footer height */
+}
+
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}
+
+</style>
+{% endblock %}
+</head>
+
+<body>
+  <main role="main">
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">
+        <a href="{% url 'login' %}">Inbox HOME</a>
+      </h5>
+      
+      <a class="p-2 text-dark" href="{% url 'mail_list' %}">MailList</a>
+      <a class="p-2 text-dark" href="{% url 'mail_create' %}">MailCreate</a>
+      <a class="p-2 text-dark" href="/redoc">Redoc</a>
+      <a class="p-2 text-dark" href="/swagger">Swagger</a>
+      <a class="p-2 text-dark" href="{% url 'customer_register' %}">Register</a>
+      <a class="p-2 text-dark" href="{% url 'login' %}">Login</a>
+      <nav class="my-2 my-md-0 mr-md-3">
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ user.username }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+              <a class="dropdown-item" href="#">Change password</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+            </div>
+          </li>
+        </ul>
+        {% else %}
+        <form class="form-inline ml-auto">
+<!--          <a href="" class="btn btn-outline-secondary">Log in</a>-->
+<!--          <a href="" class="btn btn-primary ml-2">Sign up</a>-->
+        </form>
+        {% endif %}
+      </nav>
+    </div>
+  </main>
+
+  <div class="container">
+    {% block content %}
+      <p>Default content...</p>
+    {% endblock content %}
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted"><center>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Olusegun Odewole -  All Rights Reserved</center></span>
+    </div>
+  </footer>
+
+
+
+  {% block javascript %}
+  <!-- Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+  <!-- 3rd party JavaScript -->
+
+  <!-- Project JS -->
+
+
+  {% endblock javascript %}
+
+</body>
+</html>

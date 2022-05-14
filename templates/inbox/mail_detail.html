@@ -1,0 +1,32 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %} Send Mail {% endblock %}
+{% block content %}
+<div class="container">
+<br>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<p>
+    <a class="btn btn-light" href="{% url 'mail_list' %}">
+    Messages Listing
+    </a>
+</p>
+    
+<table class="table">
+    <tr><td>Subject</td><td>{{ object.subject }}</td></tr>
+    <tr><td>Message</td><td>{{ object.content }}</td></tr>
+	<tr><td>Date Created</td><td>{{ object.created }}</td></tr>
+</table>
+
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %} Send Mail {% endblock %}
+{% block content %}
+<div class="container">
+<br>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<p>
+    <a class="btn btn-light" href="{% url 'mail_list' %}">
+    Messages Listing
+    </a>
+</p>
+
+<h1> Send Mail</h1>
+<form action="" method="POST" >
+{% csrf_token %}
+{{form|crispy}}
+<input type="submit" value="Send" class="btn btn-block btn-primary">                     
+
+</form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %} Welcome {% endblock %}
+{% block content %}
+<div class="container">
+<br>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<!--<center><h1>CT Scan Status</h1></center>-->
+
+    
+        <div class="border p-3 bg-white">
+            <center><h3>You have {{unread_messages}} unread Messages out of {{total_messages}} Total</h1></center>
+                <div class="d-flex justify-content-center">
+                <p>
+                    <a class="btn btn-primary" href="{% url 'mail_list' %}">
+                        View Messages
+                    </a>
+                </p>
+                </div>
+            
+    </div>
+</div>
+
+
+
+
+</div><!--End of display table-->
+
+
+
+
+
+
+
+</div>
+{% endblock %}

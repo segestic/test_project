@@ -1,7 +1,5 @@
 # test_project
-Notification Messaging with API - testMbl
-
-# GoCardless sample application
+#Notification Messaging with API - sample application
 
 ## Setup
 

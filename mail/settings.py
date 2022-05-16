@@ -217,3 +217,9 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+
+import django_heroku
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

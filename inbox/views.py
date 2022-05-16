@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
-from accounts.decorators import student_only, lecturer_only
+from accounts.decorators import student_only
 from django.http import HttpResponse
 from .models import Mail
 from django.http import HttpResponseRedirect
@@ -14,11 +14,9 @@ from django.contrib import messages
 @login_required
 def index(request):
     user = request.user
-    messages = Mail.objects.filter(user_id=user.id)[0]#.select_related(user)
     total_messages = Mail.objects.filter(user_id=user.id)#.all()
     unread_messages = total_messages.filter(is_read=False)
     context = {
-        # 'messages':messages,
         'total_messages':total_messages.count(),
         'unread_messages':unread_messages.count(),
 
@@ -42,16 +40,21 @@ class MailDetailView(generic.DetailView):
 class MailCreateView(generic.CreateView):
     model = Mail
     form_class = SendMailForm
+    #success_message = 'Message successfully sent!!'
     template_name = 'inbox/mail_create_form.html'
 
     def form_valid(self, form):
         mail = form.save()
+        messages.success(self.request, "Message successfully sent!!")
         return redirect('mail_create')
     
 
 class MailListView(generic.ListView):
-    # model = Style
-    queryset = Mail.objects.all().order_by('-id')
+    # model = Mail
+    # queryset = Mail.objects.all().order_by('-id')
     context_object_name = 'mail'
     paginate_by = 10
 
+    def get_queryset(self, *args, **kwargs):
+        user_messages = Mail.objects.filter(user=self.request.user).all().order_by('-id')
+        return user_messages 

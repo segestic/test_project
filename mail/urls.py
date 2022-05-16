@@ -17,14 +17,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+# from django.urls import re_path
+# from api.views import CustomConfirmEmailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
-    path('api/', include('api.urls')),
+    path('api/v1/', include('api.urls')),
     path('accounts/', include('accounts.urls')),
     # path('accounts/', include('allauth.urls')), # new
     path('inbox/', include('inbox.urls')),
+    path('', include('django.contrib.auth.urls')),   
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # from django.conf.urls import url#new

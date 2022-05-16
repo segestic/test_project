@@ -1,33 +1,29 @@
 from django.urls import path, include
+from django.urls import re_path
 # from django.conf.urls import url
-from .views import CustomerSignUpView, HelloTestView, ObtainAuthTokenView
+from .views import CustomerSignUpView, HelloTestView, ObtainAuthTokenView, CustomConfirmEmailView
 #from .import  views
 
 
 urlpatterns = [
     #API URLS BEGINSSSSS
+    # path('api-auth/', include('rest_framework.urls')), #for development
+    path('rest-auth/', include('rest_auth.urls')), #must be on , has rest-login, logout.
+    re_path('rest-auth/registration/account-confirm-email/(?P<key>.+)/', CustomConfirmEmailView.as_view(), name='account_confirm_email'), ##NEW 2022 for confirm email to work
     #Registration Urls
     path('registration/customer/', CustomerSignUpView.as_view(), name='register-customer'),
-    path('test-api-view/', HelloTestView.as_view(), name='demo')
-    #API URLS END, VIEWS START
 ]
 
-#the namesppace specified in project level urls makes us to use app_name
 
-
-from django.views.generic import TemplateView
-
-#python manage.py runserver 5050
-
-###############TODO.......
+###############MESSAGES#########.
 
 from django.urls import path
 from . import views
 urlpatterns += [
-    path("v1/inbox/",views.ListInboxAPIView.as_view(),name="todo_list"),
-    path("v1/inbox/create/", views.CreateInboxAPIView.as_view(),name="todo_create"),
-    path("v1/inbox/update/<int:pk>/",views.UpdateInboxAPIView.as_view(),name="update_todo"),
-    path("v1/inbox/delete/<int:pk>/",views.DeleteInboxAPIView.as_view(),name="delete_todo")
+    path("inbox/",views.ListInboxAPIView.as_view(),name="todo_list"),
+    path("inbox/create/", views.CreateInboxAPIView.as_view(),name="todo_create"),
+    path("inbox/update/<int:pk>/",views.UpdateInboxAPIView.as_view(),name="update_todo"),
+    path("inbox/delete/<int:pk>/",views.DeleteInboxAPIView.as_view(),name="delete_todo")
 ]
 
 #token - NEW

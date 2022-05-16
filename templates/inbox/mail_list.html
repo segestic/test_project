@@ -37,7 +37,11 @@
           <tr>
             <td>{{forloop.counter}}</td>
             <td> <a href="{{a.get_absolute_url}}">{{a.subject}}</a></td>
-            <td> <a href="{{a.get_absolute_url}}">{{a.content}}</a></td>
+            {% if a.is_read == True %}
+            <td> <label class="badge badge-warning"> {{a.content|truncatechars:20}} </label></td>
+            {% else %}
+            <td> <a href="{{a.get_absolute_url}}">{{a.content|truncatechars:20}}</a></td>
+            {% endif %}
 			<td>{{a.created|date:"SHORT_DATE_FORMAT"}}</td>
 		</tr>	
 	{% endfor %}		

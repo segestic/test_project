@@ -21,6 +21,39 @@ class CustomerSignUpView(RegisterView):
     
 
 
+
+
+
+
+######new 2022 for django-rest-auth activate email to work.
+
+from allauth.account.views import ConfirmEmailView
+from django.contrib.auth import get_user_model
+#seg
+from allauth.account.models import EmailAddress
+from django.shortcuts import redirect
+from django.contrib.auth import login
+from django.http import Http404
+
+class CustomConfirmEmailView(ConfirmEmailView):
+    def get(self, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except Http404:
+            self.object = None
+        user = get_user_model().objects.get(email=self.object.email_address.email)
+        verify = EmailAddress.objects.get(user_id=user.id) #filter has no attribute save. its only get - specific queryset that has attribute save..
+        verify.verified = True
+        verify.save() 
+        # messages.success(self.request, ('Your email have been verified.'))
+        login(self.request, user)
+        redirect_url = '/'  #reverse('user', args=(user.id,))
+        return redirect(redirect_url)
+
+
+
+
+##########################
 from rest_framework.views import APIView    
 from .custom_permissions import IsCustomer
 from rest_framework.response import Response

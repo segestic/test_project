@@ -5,6 +5,10 @@
 
 {% block title %} Welcome {% endblock %}
 {% block content %}
+<style>
+    .border {background-color: #a3b8cf; } 
+    .btn {background: #1b0594; }
+</style>
 <div class="container">
 <br>
 
@@ -19,8 +23,13 @@
 <!--<center><h1>CT Scan Status</h1></center>-->
 
     
-        <div class="border p-3 bg-white">
+        <div class="border p-3">
+            <center><h3>Hello {{user.username}}</h3></center>
+            <br>
+            <br>
+            <br>
             <center><h3>You have {{unread_messages}} unread Messages out of {{total_messages}} Total</h1></center>
+                <br>
                 <div class="d-flex justify-content-center">
                 <p>
                     <a class="btn btn-primary" href="{% url 'mail_list' %}">
@@ -28,7 +37,7 @@
                     </a>
                 </p>
                 </div>
-            
+            <br>
     </div>
 </div>
 

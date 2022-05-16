@@ -25,6 +25,14 @@
   }
 }
 
+.badge {
+     border-radius: 0;
+     font-size: 12px;
+     line-height: 1;
+     padding: .375rem .5625rem;
+     font-weight: normal
+ }
+
 body {
   margin-bottom: 60px; /* Margin bottom by footer height */
 }
@@ -61,8 +69,6 @@ body {
       <a class="p-2 text-dark" href="{% url 'mail_create' %}">MailCreate</a>
       <a class="p-2 text-dark" href="/redoc">Redoc</a>
       <a class="p-2 text-dark" href="/swagger">Swagger</a>
-      <a class="p-2 text-dark" href="{% url 'customer_register' %}">Register</a>
-      <a class="p-2 text-dark" href="{% url 'login' %}">Login</a>
       <nav class="my-2 my-md-0 mr-md-3">
         {% if user.is_authenticated %}
         <ul class="navbar-nav ml-auto">
@@ -78,6 +84,8 @@ body {
           </li>
         </ul>
         {% else %}
+        <a class="p-2 text-dark" href="{% url 'customer_register' %}">Register</a>
+      <a class="p-2 text-dark" href="{% url 'login' %}">Login</a>
         <form class="form-inline ml-auto">
 <!--          <a href="" class="btn btn-outline-secondary">Log in</a>-->
 <!--          <a href="" class="btn btn-primary ml-2">Sign up</a>-->
@@ -109,7 +117,13 @@ body {
   <!-- 3rd party JavaScript -->
 
   <!-- Project JS -->
-
+  <script>
+    setTimeout(function(){
+      if ($('#msg').length > 0) {
+        $('#msg').remove();
+      }
+    }, 2000)
+  </script>
 
   {% endblock javascript %}
 

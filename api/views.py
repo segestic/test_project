@@ -23,15 +23,6 @@ from rest_framework.views import APIView
 from .custom_permissions import IsCustomer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated 
-
-class HelloTestView(APIView):
-    def get(self, request):
-        context = {"message": "Hello, World!"} # <------ Response to the client
-        return Response(context)
-
-
-
-
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 
@@ -163,17 +154,6 @@ class CreateInboxAPIView(CreateAPIView):
         else:
             return Response(serializer.errors, 400)
 
-class UpdateInboxAPIView(UpdateAPIView):
-    """This endpoint allows for updating a specific todo by passing in the id of the todo to update"""
-    permission_classes = [IsAuthenticated & (IsCustomer)]
-    queryset = Mail.objects.all()
-    serializer_class = MailSerializer
-    
-class DeleteInboxAPIView(DestroyAPIView):
-    """This endpoint allows for deletion of a specific Todo from the database"""
-    permission_classes = [IsAuthenticated & (IsCustomer)]
-    queryset = Mail.objects.all()
-    serializer_class = MailSerializer  
 
 
 

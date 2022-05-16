@@ -30,8 +30,19 @@ session operates in a virtual environment.
 
 Once `pip` has finished downloading the dependencies:
 open the .env.example file and fill your own detail then #rename it to .env
-.env come from Python Decouple is a Python library aimed used to separate our configuration settings from code.
 
+.env come from Python Decouple is a Python library used to separate our configuration settings from code.
+
+Then migrate Account app, 
+```sh
+(venv)$ python manage.py migrate accounts
+```
+Migrate other apps
+```sh
+(venv)$ python manage.py migrate
+```
+
+Afterwards runserver by:
 ```sh
 (venv)$ python manage.py runserver
 ```

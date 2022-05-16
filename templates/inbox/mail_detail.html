@@ -5,7 +5,43 @@
 
 {% block title %} Send Mail {% endblock %}
 {% block content %}
-<div class="container">
+<style>
+    .container2 {
+        border: 1px;
+        border-color: black;
+        background-color: white;
+        width: 80%;
+        justify-content: center;
+        border-style: solid;
+        padding: 100px;
+        margin: auto;
+
+    }
+
+    .inner {
+        background-color: rgb(157, 157, 179);
+        border: 1px;
+        border-color: black;
+        border-style: solid;
+        padding: 20px;
+
+
+    }
+
+    a {
+        color: rgb(8, 8, 8);
+    }
+
+    hr {
+        width: 100px;
+        border-color: black;
+        height: 5px;
+        margin-top:5px;
+        margin-left:0;
+
+</style>
+
+<div class="container 2">
 <br>
 
 {% if messages %}
@@ -22,11 +58,29 @@
     </a>
 </p>
     
-<table class="table">
-    <tr><td>Subject</td><td>{{ object.subject }}</td></tr>
-    <tr><td>Message</td><td>{{ object.content }}</td></tr>
-	<tr><td>Date Created</td><td>{{ object.created }}</td></tr>
-</table>
 
+
+
+
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+    <h1>Messages</h1>
+    <div class="inner">
+        <div>
+
+            <h2>{{object.subject}}</h1>
+            <h2> {{object.content}} </h5>
+            </div>		
+
+    </div>
 </div>
+
+
 {% endblock %}

@@ -5,7 +5,45 @@
 
 {% block title %} Send Mail {% endblock %}
 {% block content %}
-<div class="container">
+<style>
+    .container2 {
+        border: 1px;
+        border-color: black;
+        background-color: white;
+        width: 80%;
+        justify-content: center;
+        border-style: solid;
+        padding: 100px;
+        margin: auto;
+
+    }
+
+    .inner {
+        background-color: rgb(157, 157, 179);
+        border: 1px;
+        border-color: black;
+        border-style: solid;
+        padding: 20px;
+
+
+    }
+
+    a {
+        color: rgb(8, 8, 8);
+    }
+
+    hr {
+        width: 100px;
+        border-color: black;
+        height: 5px;
+        margin-top:5px;
+        margin-left:0;
+
+</style>
+
+
+
+<div class="container2">
 <br>
 
 {% if messages %}
@@ -16,60 +54,24 @@
     {% endfor %}
 {% endif %}
 
-<div class="row my-4">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                Messages List
-            </div>
-            
-    <div class="table-responsive">
- 	<table class='table'>
-		<thead>
-          <tr>
-            <th>S/No</th>
-            <th>Subject</th>
-			<th>Message</th>
-            <th>Date Created</th>
-          </tr>
-        </thead>
-      {% for a in mail %}
-          <tr>
-            <td>{{forloop.counter}}</td>
-            <td> <a href="{{a.get_absolute_url}}">{{a.subject}}</a></td>
+    <h1>Messages</h1>
+    <div class="inner">
+        {% for a in mail %}
+        <div>
+
+            <h2><a href="{{a.get_absolute_url}}">{{a.subject}}</a></h1>
             {% if a.is_read == True %}
-            <td> <label class="badge badge-warning"> {{a.content|truncatechars:20}} </label></td>
+            <h2><label class="badge badge-warning"> {{a.content|truncatechars:20}} </a></label></h5>
+            <hr>
             {% else %}
-            <td> <a href="{{a.get_absolute_url}}">{{a.content|truncatechars:20}}</a></td>
+            <h2>{{a.content|truncatechars:20}}</h2>
+            <hr>
             {% endif %}
-			<td>{{a.created|date:"SHORT_DATE_FORMAT"}}</td>
-		</tr>	
-	{% endfor %}		
-</table>
+        </div>
+            {% endfor %}		
 
-</div>
-
-
-<div>
-	{% if is_paginated %}
-		<nav aria-label="Page navigation conatiner"></nav>
-		<ul class="pagination justify-content-center">
-			{% if page_obj.has_previous %}
-			<li><a href="?page={{ page_obj.previous_page_number }}"class="page-link">&laquo; PREV</a></li>
-			{% endif %} 
-			{% if page_obj.has_next %}
-			<li><a href="?page={{ page_obj.next_page_number }}" class="page-link">NEXT&raquo;</a></li>
-			{% endif %}
-		</ul>
-		</div>
-		<p class="text-center"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p> 
-		
-		
-	{% endif %}
+    </div>
 </div>
 
-</div>
-</div>
-</div>
 
 {% endblock %}

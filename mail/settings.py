@@ -218,6 +218,9 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+email = config('EMAIL_HOST_USER')
+ADMINS = [('ola', email)]
+
 
 import django_heroku
 

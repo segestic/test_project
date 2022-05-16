@@ -1,11 +1,7 @@
 from ast import Is
 # Create your views here.
 from django.shortcuts import render
-from accounts.models import Customer
-
-# Create your views here.
-
-#from django.shortcuts import render
+from accounts.models import User, Customer
 from rest_auth.registration.views import RegisterView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import (
@@ -19,37 +15,6 @@ class CustomerSignUpView(RegisterView):
                                     #note using tuple (AllowAny) here instead of dictionary [AllowAny] for security, same should be for urls, settings etc.
 
     
-
-
-
-
-
-
-######new 2022 for django-rest-auth activate email to work.
-
-from allauth.account.views import ConfirmEmailView
-from django.contrib.auth import get_user_model
-#seg
-from allauth.account.models import EmailAddress
-from django.shortcuts import redirect
-from django.contrib.auth import login
-from django.http import Http404
-
-class CustomConfirmEmailView(ConfirmEmailView):
-    def get(self, *args, **kwargs):
-        try:
-            self.object = self.get_object()
-        except Http404:
-            self.object = None
-        user = get_user_model().objects.get(email=self.object.email_address.email)
-        verify = EmailAddress.objects.get(user_id=user.id) #filter has no attribute save. its only get - specific queryset that has attribute save..
-        verify.verified = True
-        verify.save() 
-        # messages.success(self.request, ('Your email have been verified.'))
-        login(self.request, user)
-        redirect_url = '/'  #reverse('user', args=(user.id,))
-        return redirect(redirect_url)
-
 
 
 
@@ -99,9 +64,9 @@ class ObtainAuthTokenView(APIView):
 
 
 
-################--TODO---------
+################--INBOX---------
 from rest_framework import viewsets
-from .serializers import MailSerializer
+from .serializers import MailSerializer, CreateMailSerializer
 from inbox.models import Mail
 
 
@@ -112,19 +77,92 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import DestroyAPIView
 from rest_framework.generics import UpdateAPIView
 
-    
+
+
 class ListInboxAPIView(ListAPIView):
     """This endpoint list all of the available todos from the database"""
     permission_classes = [IsAuthenticated & (IsCustomer)]
-    queryset = Mail.objects.all().order_by('-created')
     serializer_class = MailSerializer
+    # queryset = Mail.objects.all().order_by('-created')
+
+    def get_queryset(self, *args, **kwargs): 
+        # user_messages = Mail.objects.filter(user=self.request.user).all().order_by('-id')
+        user_messages = Mail.objects.filter(user=self.request.user).only('subject', 'content', 'is_read').order_by('-id')
+        return user_messages 
+
+
+class DetailInboxAPIView(APIView):
+    http_method_names = ['get', 'head']
+    permission_classes = [IsAuthenticated & (IsCustomer)]
+    # queryset = Mail.objects.all().order_by('-created')
+    serializer_class = MailSerializer 
     
+    def get(self, *args, **kwargs):
+        user_messages = Mail.objects.filter(user=self.request.user).all()
+        specific = user_messages.filter(id=self.kwargs['pk'])
+        specific.update(is_read=True)
+        data = MailSerializer(specific[0]).data##Must_be_sliced
+        return Response(data, status=200) 
+ 
+
+#to use username instead of user_id    
+# class CreateInboxAPIView(CreateAPIView):
+#     """This endpoint allows for creation of a todo"""
+#     permission_classes = [IsAuthenticated & (IsCustomer)]
+#     # queryset = Mail.objects.all()
+#     serializer_class = CreateMailSerializer
+
+#     def post(self, request, *args, **kwargs):
+#         recipent =  request.data.get("recipent_username")            
+#         print(recipent)
+#         subject = request.data.get("subject")
+#         content = request.data.get("content")
+#         try:
+#             user_id = User.objects.get(username=recipent).id
+#         except:    
+#             return Response('errors', 400)
+#         data = {'subject': subject, 'content': content, 'user_id': user_id}
+#         serializer = CreateMailSerializer(data=data)
+#         # return Response(serializer.data)
+#         if serializer.is_valid():
+#             print('validddddddddd')
+#             new = Mail.objects.create(subject=subject, content=content, user_id=user_id)
+#             new.save()
+#             return Response({
+#             'status': 'successfully created',
+#             'subject': str(new.subject),
+#             'content': str(new.content),
+#             'recipent': recipent,
+#         }, status=201)
+#             # return Response('Successfully Created', 201)
+#         else:
+#             return Response(serializer.errors, 400)
+
+
 class CreateInboxAPIView(CreateAPIView):
     """This endpoint allows for creation of a todo"""
     permission_classes = [IsAuthenticated & (IsCustomer)]
-    queryset = Mail.objects.all()
+    # queryset = Mail.objects.all()
     serializer_class = MailSerializer
-    
+
+    def post(self, request, *args, **kwargs):
+        subject = request.data.get("subject")
+        content = request.data.get("content")
+        user_id =  request.data.get("user_id")
+        data = {'subject': subject, 'content': content, 'user_id': user_id}
+        serializer = CreateMailSerializer(data=data)
+        if serializer.is_valid():
+            new = Mail.objects.create(subject=subject, content=content, user_id=user_id)
+            new.save()
+            return Response({
+                'status': 'successfully created',
+                'subject': str(new.subject),
+                'content': str(new.content),
+                'recipent': user_id,
+            }, status=201)
+        else:
+            return Response(serializer.errors, 400)
+
 class UpdateInboxAPIView(UpdateAPIView):
     """This endpoint allows for updating a specific todo by passing in the id of the todo to update"""
     permission_classes = [IsAuthenticated & (IsCustomer)]
@@ -135,4 +173,37 @@ class DeleteInboxAPIView(DestroyAPIView):
     """This endpoint allows for deletion of a specific Todo from the database"""
     permission_classes = [IsAuthenticated & (IsCustomer)]
     queryset = Mail.objects.all()
-    serializer_class = MailSerializer    
+    serializer_class = MailSerializer  
+
+
+
+######FOR django-rest-auth activate email to work.
+
+from allauth.account.views import ConfirmEmailView
+from django.contrib.auth import get_user_model
+#seg
+from allauth.account.models import EmailAddress
+from django.shortcuts import redirect
+from django.contrib.auth import login
+from django.http import Http404
+
+class CustomConfirmEmailView(ConfirmEmailView):
+    def get(self, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except Http404:
+            self.object = None
+        user = get_user_model().objects.get(email=self.object.email_address.email)
+        verify = EmailAddress.objects.get(user_id=user.id) #filter has no attribute save. its only get - specific queryset that has attribute save..
+        verify.verified = True
+        verify.save() 
+        # messages.success(self.request, ('Your email have been verified.'))
+        login(self.request, user)
+        redirect_url = '/'  #reverse('user', args=(user.id,))
+        return redirect(redirect_url)
+
+
+
+
+##################
+

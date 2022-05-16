@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.models import User
 from accounts.decorators import student_only
 from django.http import HttpResponse
@@ -25,7 +26,7 @@ def index(request):
 
 from django.views import generic
 
-class MailDetailView(generic.DetailView):
+class MailDetailView(LoginRequiredMixin, generic.DetailView):
     form_class = MailForm
     template_name = 'inbox/mail_detail.html' 
     pk_url_kwarg = "pk"  
@@ -37,7 +38,7 @@ class MailDetailView(generic.DetailView):
         return specific 
 
 
-class MailCreateView(generic.CreateView):
+class MailCreateView(LoginRequiredMixin, generic.CreateView):
     model = Mail
     form_class = SendMailForm
     #success_message = 'Message successfully sent!!'
@@ -49,7 +50,7 @@ class MailCreateView(generic.CreateView):
         return redirect('mail_create')
     
 
-class MailListView(generic.ListView):
+class MailListView(LoginRequiredMixin, generic.ListView):
     # model = Mail
     # queryset = Mail.objects.all().order_by('-id')
     context_object_name = 'mail'

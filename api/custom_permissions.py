@@ -3,7 +3,7 @@ from rest_framework.permissions import BasePermission
 
 class IsCustomer(BasePermission):
    def has_permission(self, request, view):
-      return request.user.user_type == 1
+      return request.user.is_customer == 1
 
 
 

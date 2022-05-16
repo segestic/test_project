@@ -20,10 +20,11 @@ urlpatterns = [
 from django.urls import path
 from . import views
 urlpatterns += [
-    path("inbox/",views.ListInboxAPIView.as_view(),name="todo_list"),
-    path("inbox/create/", views.CreateInboxAPIView.as_view(),name="todo_create"),
-    path("inbox/update/<int:pk>/",views.UpdateInboxAPIView.as_view(),name="update_todo"),
-    path("inbox/delete/<int:pk>/",views.DeleteInboxAPIView.as_view(),name="delete_todo")
+    path("inbox/",views.ListInboxAPIView.as_view(),name="inbox_list"),
+    path("inbox/create/", views.CreateInboxAPIView.as_view(),name="inbox_create"),
+    path("inbox/detail/<int:pk>/", views.DetailInboxAPIView.as_view(), name="inbox_detail")
+    # path("inbox/update/<int:pk>/",views.UpdateInboxAPIView.as_view(),name="update_todo"),
+    # path("inbox/delete/<int:pk>/",views.DeleteInboxAPIView.as_view(),name="delete_todo")
 ]
 
 #token - NEW

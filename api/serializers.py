@@ -47,7 +47,7 @@ class CustomerSignUpSerializer(RegisterSerializer):
     @transaction.atomic
     def save(self, request):
         user = super(CustomerSignUpSerializer, self).save(request)
-        user.user_type = 1
+        user.is_customer = 1
         user.first_name = self.cleaned_data.get('first_name')
         user.last_name = self.cleaned_data.get('last_name')
         #user.is_active = True #all-auth and rest-auth automatically makes all accounts active        
@@ -74,5 +74,21 @@ from inbox.models import Mail
 class MailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mail
-        fields = "__all__"
-        
+        # fields = '__all__'
+        fields = ['id', 'subject', 'content', 'is_read']
+
+
+class CreateMailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mail
+        fields = ['subject', 'content', 'user_id']
+
+        # def __init__(self, *args, **kwargs):
+        #     super(CreateMailSerializer, self).__init__(*args, **kwargs)
+        #     try:
+        #         if self.context['request'].method in ['POST', 'PUT']:
+        #             self.fields['user_id'].initial = 'recipent_username'
+        #             #recipent_username
+        #     except:
+        #         self.fields['user_id'].initial = 'user_id'
+        #         pass

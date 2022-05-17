@@ -19,7 +19,7 @@ class customer_register(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('/')
 
 # @unauthenticated_user
@@ -28,7 +28,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 @unauthenticated_user
-def login_request(request):
+def login_request(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method=='POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():

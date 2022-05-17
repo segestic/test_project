@@ -60,7 +60,7 @@
         <div>
 
             <h2><a href="{{a.get_absolute_url}}">{{a.subject}}</a></h1>
-            {% if a.is_read == True %}
+            {% if a.is_read == False %}
             <h2><label class="badge badge-warning"> {{a.content|truncatechars:20}} </a></label></h5>
             <hr>
             {% else %}

@@ -28,7 +28,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 @unauthenticated_user
-def login_request(request, backend='django.contrib.auth.backends.ModelBackend'):
+def login_request(request):
     if request.method=='POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():

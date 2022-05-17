@@ -79,9 +79,17 @@ class MailSerializer(serializers.ModelSerializer):
 
 
 class CreateMailSerializer(serializers.ModelSerializer):
+    # new = serializers.SerializerMethodField()  #NONMODELFIELD e.g.
+    recipent_username = serializers.CharField(max_length=60, required=False, allow_blank=True)#Adding non model field to serializer...
+
     class Meta:
         model = Mail
-        fields = ['subject', 'content', 'user_id']
+        fields = ['subject', 'content', 'recipent_username' ]
+        
+    # def validate(self, attrs):
+    #     # do your stuff
+    #     attrs.pop('recipent_username', None)  # avoid sending it back to model creation
+    #     return super().validate(attrs)
 
         # def __init__(self, *args, **kwargs):
         #     super(CreateMailSerializer, self).__init__(*args, **kwargs)

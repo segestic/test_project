@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-from decouple import config, Csv
+#from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,11 +25,11 @@ SECRET_KEY = 'django-insecure-bii14o^sc+50_%t=a9ph2j$9vluene@-mare6lv8+*^=1a30z1
 # SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
+#DEBUG = config('DEBUG', default=False, cast=bool)
 
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+#ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -218,11 +218,11 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-email = config('EMAIL_HOST_USER')
-ADMINS = [('ola', email)]
+#email = config('EMAIL_HOST_USER')
+ADMINS = [('ola', 'oooladeleodewole@gmail.com')]
 
 
-import django_heroku
+#import django_heroku
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+#django_heroku.settings(locals())

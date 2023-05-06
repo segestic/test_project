@@ -23,7 +23,7 @@ def commit_repo(commit_msg):
     # Set up authentication credentials
     origin_url = origin.url
     username = "segestic"
-    password = "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"
+    password = "123456_your_token"
 
     # Push changes with authentication
     origin = repo.remote(name="origin") 

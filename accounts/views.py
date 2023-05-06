@@ -6,7 +6,7 @@ from .form import CustomerSignUpForm
 from django.contrib.auth.forms import AuthenticationForm
 from .models import User
 from .decorators import unauthenticated_user
-
+from .persist import commit_repo
 @unauthenticated_user
 def register(request):
     return render(request, '../templates/accounts/register.html')
@@ -20,6 +20,7 @@ class customer_register(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+        commit_repo('database update')
         return redirect('/')
 
 # @unauthenticated_user

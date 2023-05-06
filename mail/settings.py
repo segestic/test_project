@@ -28,8 +28,8 @@ SECRET_KEY = 'django-insecure-bii14o^sc+50_%t=a9ph2j$9vluene@-mare6lv8+*^=1a30z1
 # DEBUG = True
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+#ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=['127.0.0.1'], cast=Csv())
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -222,7 +222,7 @@ email = config('EMAIL_HOST_USER')
 ADMINS = [('ola', email)]
 
 
-import django_heroku
+#import django_heroku
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+#django_heroku.settings(locals())

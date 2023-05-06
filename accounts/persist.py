@@ -31,9 +31,10 @@ def commit_repo(commit_msg):
     #origin.push(refspec="main:main", force=True, progress=True, auth=(username, password))
     #origin.push(auth=(username, password))
 #    origin.push()
-    origin_url = origin.url
-    print (origin_url)
-    new_origin_url = origin_url.replace('https://', f'https://{username}:{password}@')
+    #origin_url = origin.url
+    #print (origin_url)
+    #new_origin_url = origin_url.replace('https://', f'https://{username}:{password}@')
+    new_origin_url = f'https://{username}:{password}@github.com/segestic/test_project.git'
     origin.set_url(new_origin_url)
     origin.push()
 

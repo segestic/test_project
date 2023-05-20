@@ -39,6 +39,7 @@ def login_request(request):
             if user is not None :
                 login(request,user)
                 return HttpResponseRedirect(reverse('dashboard-index'))
+                commit_repo('user-login')
             else:
                 messages.error(request,"Invalid username or password")
         else:
